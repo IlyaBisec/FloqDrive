@@ -8,10 +8,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 // Service for work with user files
-// load, get, delete and list files
+// upload, get, delete and list files
 public interface FileStorageService
 {
-    // Load user file:
+    // Upload user file:
     //  - generate uniq file name
     //  - save file in disk
     //  - create rec in database
