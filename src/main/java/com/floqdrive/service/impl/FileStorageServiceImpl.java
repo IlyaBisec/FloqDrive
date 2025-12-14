@@ -9,13 +9,11 @@ import com.floqdrive.repository.FileRepository;
 import com.floqdrive.repository.UserRepository;
 import com.floqdrive.service.FileStorageService;
 
-import org.hibernate.annotations.NotFound;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.time.LocalDateTime;
@@ -80,7 +78,7 @@ public class FileStorageServiceImpl implements FileStorageService
         fileRepository.save(entity);
 
         // Return DTO
-        return new FileUploadResponse(entity.getId(), originalName);
+        return new FileUploadResponse(entity.getId(), originalName, entity.getSize());
     }
 
     @Override
