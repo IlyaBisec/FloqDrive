@@ -121,7 +121,7 @@ public class FileStorageServiceImpl implements FileStorageService
     }
 
     @Override
-    public List<FileIndoDto> listFiled(Long userId)
+    public List<FileIndoDto> listFiles(Long userId)
     {
         User user  = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found"));
