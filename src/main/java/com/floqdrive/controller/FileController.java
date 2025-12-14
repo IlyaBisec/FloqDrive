@@ -2,6 +2,7 @@ package com.floqdrive.controller;
 
 import com.floqdrive.dto.FileIndoDto;
 import com.floqdrive.dto.FileUploadResponse;
+import com.floqdrive.entity.User;
 import com.floqdrive.service.FileStorageService;
 
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,12 +23,25 @@ public class FileController {
     private final FileStorageService fileStorageService;
 
     // Upload file
-    @PatchMapping("/upload")
+    @PostMapping("/upload")
     public FileUploadResponse uploadFile(
             @RequestParam("file") MultipartFile file,
-            @RequestParam("userId") Long userId)
+            @AuthenticationPrincipal User user) // Spring sec paste current user
     {
-        return fileStorageService.uploadFile(file, userId);
+        // Check file empty
+        if(file.isEmpty())
+        {
+            throw new IllegalArgumentException("File is empty");
+        }
+
+        // Check file size <= 5 MB
+        long maxSize = 5 * 1024 * 1024;
+        if(file.getSize() > maxSize)
+        {
+            throw new IllegalArgumentException("File is too large (max 5 MB)");
+        }
+
+        return fileStorageService.uploadFile(file, user.getId());
     }
 
     // Download file
