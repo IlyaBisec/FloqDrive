@@ -5,6 +5,7 @@ import com.floqdrive.dto.FileUploadResponse;
 import com.floqdrive.entity.User;
 import com.floqdrive.service.FileStorageService;
 
+import com.floqdrive.service.impl.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.core.io.Resource;
@@ -26,8 +27,10 @@ public class FileController {
     @PostMapping("/upload")
     public FileUploadResponse uploadFile(
             @RequestParam("file") MultipartFile file,
-            @AuthenticationPrincipal User user) // Spring sec paste current user
+            @AuthenticationPrincipal UserDetailsImpl userDetails) // Spring sec paste current user
     {
+        Long userId = userDetails.getUser().getId();
+
         // Check file empty
         if(file.isEmpty())
         {
@@ -41,7 +44,7 @@ public class FileController {
             throw new IllegalArgumentException("File is too large (max 5 MB)");
         }
 
-        return fileStorageService.uploadFile(file, user.getId());
+        return fileStorageService.uploadFile(file, userId);
     }
 
     // Download file
