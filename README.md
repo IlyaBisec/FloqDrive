@@ -164,7 +164,7 @@ After starting the application:
 http://localhost:8080/swagger-ui.html
 ```
 
---
+---
 
 ## API Endpoints
 
