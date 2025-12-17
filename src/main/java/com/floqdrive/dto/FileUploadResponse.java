@@ -3,6 +3,7 @@ package com.floqdrive.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+// DTO for file upload request
 @Data
 @AllArgsConstructor
 public class FileUploadResponse

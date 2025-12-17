@@ -17,13 +17,18 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+// FileController - work with user files
 @RestController
 @RequestMapping("/api/files")
 @RequiredArgsConstructor
 public class FileController {
     private final FileStorageService fileStorageService;
 
-    // Upload file
+    /**
+     *  Upload file
+     *  @param file MultipartFile from Form
+     *  @param userDetails current user from SecurityContext
+     */
     @PostMapping("/upload")
     public FileUploadResponse uploadFile(
             @RequestParam("file") MultipartFile file,
@@ -44,6 +49,7 @@ public class FileController {
             throw new IllegalArgumentException("File is too large (max 5 MB)");
         }
 
+        // Delegate file save to a service
         return fileStorageService.uploadFile(file, userId);
     }
 
@@ -53,8 +59,10 @@ public class FileController {
             @PathVariable Long fileId,
             @RequestParam Long userId)
     {
+        // Load file from disk
         Resource resource = fileStorageService.loadFile(fileId, userId);
 
+        // Send file as attachment
         return ResponseEntity.ok()
                 .header(
                         HttpHeaders.CONTENT_DISPOSITION,
@@ -72,7 +80,7 @@ public class FileController {
         fileStorageService.deleteFile(fileId, userId);
     }
 
-    // Get user file list
+    // Get list of user files
     @GetMapping
     public List<FileIndoDto> listFiles(@RequestParam Long userId)
     {

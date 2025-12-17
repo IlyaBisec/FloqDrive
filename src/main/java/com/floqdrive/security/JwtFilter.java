@@ -24,25 +24,35 @@ public class JwtFilter extends OncePerRequestFilter
     // Service which load user by ID
     private final CustomUserDetailsService userDetailsService;
 
+    // Check every HTTP request
+    // - Take token from Authorization
+    // - Validate JWT
+    // - Put user to SecurityContext
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException
     {
+        // Take Authorization header
         String header = request.getHeader("Authorization");
 
+        // Checking the Bearer token format
         if(header != null && header.startsWith("Bearer "))
         {
             String token = header.substring(7);
+            // Retrieving userId from JWT
             Long userId = jwtProvider.getUserIdFromToken(token);
 
+            // Loading the user
             var userDetails = userDetailsService.loadUserById(userId);
 
+            // Create an authentication object
             var auth = new UsernamePasswordAuthenticationToken(
                     userDetails, null, userDetails.getAuthorities()
             );
 
+            // Add the user to the SecurityContext
             auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(auth);
         }

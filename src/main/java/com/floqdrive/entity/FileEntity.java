@@ -18,11 +18,14 @@ public class FileEntity
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Name of file the user uploaded
     private String originalName;
+    // File name on disk (UUID)
     private String storedName;
     private Long size;
     private LocalDateTime uploadedAt;
 
+    // File owner
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User owner;

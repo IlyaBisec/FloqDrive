@@ -9,8 +9,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class FileIndoDto
 {
+    // ID file in database
     private Long id;
+    // Original file name
     private String name;
+    // File size
     private Long size;
+    // Upload date
     private LocalDateTime uploadedAt;
 }

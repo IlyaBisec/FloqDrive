@@ -21,7 +21,7 @@ public class SecurityConfig
 {
     private final JwtFilter jwtFilter;
 
-    // Define password encoder bean
+    // Password encryption
     @Bean
     public PasswordEncoder passwordEncoder()
     {
@@ -39,14 +39,18 @@ public class SecurityConfig
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
     {
         http
+                // Disabling CSRF (REST + JWT)
                 .csrf(csrf -> csrf.disable())
+                // Stateless — no HTTP sessions
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
+                // Setting up access
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
+                // Add JWT-Filter
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

@@ -19,8 +19,10 @@ public class User
     @Column(nullable = false, unique = true)
     private String username;
 
+    // Stored in encrypted form
     private String password;
 
+    // One user - many files
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private List<FileEntity> files;
 }
