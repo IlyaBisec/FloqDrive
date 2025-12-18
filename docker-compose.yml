@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: floq
+      POSTGRES_PASSWORD: floq
+      POSTGRES_DB: floqdrive
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/floqdrive
+      SPRING_DATASOURCE_USERNAME: floq
+      SPRING_DATASOURCE_PASSWORD: floq
+    depends_on:
+      - postgres
