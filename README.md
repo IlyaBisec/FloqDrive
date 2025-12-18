@@ -15,6 +15,8 @@ FloqDrive is a **RESTful backend application** built with **Spring Boot** that p
 - Downloading files
 - Deleting files
 - Access control (the user can only see their own files)
+  
+- See FEATURES.md for planned improvements and roadmap.
 
 ---
 
