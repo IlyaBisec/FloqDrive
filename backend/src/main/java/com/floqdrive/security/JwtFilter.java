@@ -37,24 +37,31 @@ public class JwtFilter extends OncePerRequestFilter
         // Take Authorization header
         String header = request.getHeader("Authorization");
 
-        // Checking the Bearer token format
-        if(header != null && header.startsWith("Bearer "))
+        try {
+            // Checking the Bearer token format
+            if (header != null && header.startsWith("Bearer ")) {
+                String token = header.substring(7);
+
+                if (jwtProvider.validateToken(token)) {
+                    // Retrieving userId from JWT
+                    Long userId = jwtProvider.getUserIdFromToken(token);
+
+                    // Loading the user
+                    var userDetails = userDetailsService.loadUserById(userId);
+
+                    // Create an authentication object
+                    var auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+                    // Add the user to the SecurityContext
+                    auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(auth);
+                }
+            }
+        }
+        catch (Exception exception)
         {
-            String token = header.substring(7);
-            // Retrieving userId from JWT
-            Long userId = jwtProvider.getUserIdFromToken(token);
-
-            // Loading the user
-            var userDetails = userDetailsService.loadUserById(userId);
-
-            // Create an authentication object
-            var auth = new UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.getAuthorities()
-            );
-
-            // Add the user to the SecurityContext
-            auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(auth);
+            SecurityContextHolder.clearContext();
+            System.out.println("JWT authentication failed: "+exception.getMessage());
         }
 
         filterChain.doFilter(request, response);
