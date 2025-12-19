@@ -2,9 +2,7 @@ package com.floqdrive.security;
 
 import com.floqdrive.entity.User;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 
 import org.springframework.stereotype.Component;
@@ -41,5 +39,20 @@ public class JwtProvider
                 .getBody();
 
         return Long.parseLong(claims.getSubject());
+    }
+
+    // Check token validate
+    public boolean validateToken(String token)
+    {
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJwt(token);
+            return true;
+        } catch (JwtException | IllegalArgumentException e)
+        {
+            return false;
+        }
     }
 }
