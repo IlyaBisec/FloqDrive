@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  floqdrive-postgres:
+    image: postgres:15
+    container_name: floqdrive-postgres
+    environment:
+      POSTGRES_DB: floqdrive
+      POSTGRES_USER: floq
+      POSTGRES_PASSWORD: floq
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile.dev
+    container_name: floqdrive-backend-dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://floqdrive-postgres:5432/floqdrive
+      SPRING_DATASOURCE_USERNAME: floq
+      SPRING_DATASOURCE_PASSWORD: floq
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - floqdrive-postgres
