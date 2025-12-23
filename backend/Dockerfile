@@ -1,13 +1,29 @@
+# ---------- BUILD STAGE ----------
 FROM eclipse-temurin:17-jdk AS build
 WORKDIR /app
 
-COPY backend/ .
+# Copy all project (root)
+COPY .. .
 
+# gradlew from root
 RUN chmod +x gradlew
-RUN ./gradlew build -x test
 
+# Build backdend only
+RUN ./gradlew :backend:bootJar -x test
+
+# ---------- RUN STAGE ----------
 FROM eclipse-temurin:17-jre
 WORKDIR /app
-COPY --from=build /app/build/libs/*.jar app.jar
+
+RUN apt-get update && apt-get install -y netcat-openbsd && rm -rf /var/lib/apt/lists/*
+
+# Copy JAR backend
+COPY --from=build /app/backend/build/libs/*.jar app.jar
+
+# wait-script in root
+COPY --from=build /app/wait-for-postgres.sh wait-for-postgres.sh
+RUN chmod +x wait-for-postgres.sh
+
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+
+ENTRYPOINT ["./wait-for-postgres.sh", "floqdrive-postgres", "java", "-jar", "app.jar"]
