@@ -1,0 +1,16 @@
+# Ignore build outputs
+build/
+**/build/
+
+# Ignore IDE files
+.idea/
+*.iml
+
+# Ignore Gradle caches
+.gradle/
+!gradlew
+
+# Logs and temporary files
+*.log
+*.tmp
+*.class
