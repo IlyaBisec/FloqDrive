@@ -22,6 +22,23 @@ FloqDrive is a **RESTful backend application** built with **Spring Boot** that p
 
 ## Project architecture
 
+```
+FloqDrive/
+├ gradlew
+├ gradle/
+├ settings.gradle
+├ build.gradle
+├ docker-compose.yml
+├ wait-for-postgres.sh
+├ backend/
+│ ├ build.gradle
+│ ├ Dockerfile
+│ └ src/
+│ 	├- java/
+│ 	└- resources/
+└ frontend/
+```
+
 Project built in **layered architecture**:
 
 - **Controller layer** – handles HTTP requests and responses
@@ -158,7 +175,7 @@ Database data is persisted using Docker volumes.
 
 ---
 
-### Localhost: PostgreSQL + Docker
+### Localhost
 
 PostgreSQL runs in a Docker container.
 
@@ -219,7 +236,7 @@ For each file:
 
 ---
 
-## 📖 Swagger
+## Swagger
 
 Swagger is used as UI documentation for APIs.
 
@@ -252,7 +269,7 @@ The application uses a **global exception handler**:
 
 ---
 
-## 📎 IlyaBisec
+## IlyaBisec
 
 The project focuses on clean architecture, stateless security,
 and production-ready containerized deployment, because was developed as a pet project to prepare for a backend position.
