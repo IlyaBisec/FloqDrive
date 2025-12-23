@@ -1,0 +1,17 @@
+# ---------- BUILD STAGE ----------
+FROM gradle:8-jdk17
+WORKDIR /app
+
+# Copy only gradle wrapper and confings
+COPY gradlew .
+COPY gradle gradle
+COPY build.gradle settings.gradle ./
+
+# gradlew from root
+RUN chmod +x gradlew
+RUN ./gradlew depedencies
+
+
+EXPOSE 8080
+
+ENTRYPOINT ["./gradlew", ":backend:bootRun"]
