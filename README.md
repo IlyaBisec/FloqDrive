@@ -96,11 +96,73 @@ Authentication is implemented through **JWT (JSON Web Token)**.
 
 ---
 
-## PostgreSQL + Docker
+## How to Run
+
+### Production-like
+
+FloqDrive is designed to run in a production-like Docker environment using Docker Compose.
+
+#### Architecture
+
+- Backend: Spring Boot (Java 17)
+- Database: PostgreSQL 15
+- Build: Gradle multi-module
+- Startup handling: wait-for-db script
+- Configuration: environment variables
+
+#### Docker Compose
+
+The application is started using Docker Compose:
+
+```
+docker compose build --no-cache
+docker compose up -d
+```
+This will start:
+- **floqdrive-backend** - Spring Boot application
+- **floqdrive-postgres** - PostgreSQL database
+
+#### Environment Variables
+
+Backend configuration is injected via environment variables:
+
+```
+SPRING_DATASOURCE_URL=jdbc:postgresql://floqdrive-postgres:5432/floqdrive
+SPRING_DATASOURCE_USERNAME=floq
+SPRING_DATASOURCE_PASSWORD=floq
+SPRING_JPA_HIBERNATE_DDL_AUTO=update
+```
+This allows the same application to run locally or inside Docker without code changes.
+
+##### Database Readiness
+
+Docker Compose **depends_on** does not guarantee database readiness.
+
+To handle this, the backend container uses a **wait-for-postgres** script that:
+- waits until PostgreSQL is reachable
+- starts the application only after the database is available
+
+This prevents startup failures in production environments.
+
+##### Logs
+
+```
+docker compose logs -f backend
+```
+##### Stop services
+
+```
+docker compose down
+```
+Database data is persisted using Docker volumes.
+
+---
+
+### Localhost: PostgreSQL + Docker
 
 PostgreSQL runs in a Docker container.
 
-### PostgreSQL:
+#### PostgreSQL:
 
 ```bash
 docker run --name drive-postgres \
@@ -111,7 +173,7 @@ docker run --name drive-postgres \
   -d postgres:15
 ```
 
-### Connection to `application.yml`:
+#### Connection to `application.yml`:
 
 ```yaml
 spring:
@@ -159,7 +221,7 @@ For each file:
 
 ## 📖 Swagger
 
-Swagger is used as UI documentation for APIs..
+Swagger is used as UI documentation for APIs.
 
 After starting the application:
 ```
@@ -190,22 +252,8 @@ The application uses a **global exception handler**:
 
 ---
 
-## How to Run
-
-### Requirements
-- Java 17+
-- Docker & Docker Compose
-
-### Steps
-1. Clone the repository
-2. Start PostgreSQL using Docker:
-3. Start backend (`DriveApplication`)
-3. Open Swagger
-4. (Optionally) start frontend
-
----
-
 ## 📎 IlyaBisec
 
-The project was developed as a pet project to prepare for a backend position.
+The project focuses on clean architecture, stateless security,
+and production-ready containerized deployment, because was developed as a pet project to prepare for a backend position.
 
