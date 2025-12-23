@@ -12,14 +12,16 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    restart: always
 
   backend:
     build:
-      context: .
+      context: .          # ← ROOT
       dockerfile: backend/Dockerfile
     container_name: floqdrive-backend
     ports:
       - "8080:8080"
+    restart: always
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://floqdrive-postgres:5432/floqdrive
       SPRING_DATASOURCE_USERNAME: floq
