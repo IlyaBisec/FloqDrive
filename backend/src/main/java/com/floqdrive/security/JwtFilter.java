@@ -27,6 +27,7 @@ public class JwtFilter extends OncePerRequestFilter
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request)
     {
+        System.out.println("JWT FILTER CHECK: " + request.getServletPath());
         String path = request.getServletPath();
 
         return path.startsWith("/swagger-ui")
