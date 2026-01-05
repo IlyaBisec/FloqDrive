@@ -132,7 +132,7 @@ FloqDrive is designed to run in a production-like Docker environment using Docke
 The application is started using Docker Compose:
 
 ```
-docker compose build --no-cache
+docker compose build --no-cache backend
 docker compose up -d
 ```
 This will start:
