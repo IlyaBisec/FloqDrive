@@ -15,13 +15,13 @@ It is intentionally high-level and shows the **development direction**, not impl
 - PostgreSQL integration
 - Dockerized database
 - Clean layered architecture (Controller / Service / Repository)
+- Docker Compose (backend + database)
 
 ---
 
 ## In Progress / Next Steps
 
 - Swagger / OpenAPI documentation
-- Docker Compose (backend + database)
 - Unit tests (JUnit)
 - Integration tests
 - Basic CI pipeline (GitHub Actions)
