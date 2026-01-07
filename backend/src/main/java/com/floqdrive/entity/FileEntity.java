@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 
 @Entity
+@Table(name = "files")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -27,6 +28,6 @@ public class FileEntity
 
     // File owner
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User owner;
 }
