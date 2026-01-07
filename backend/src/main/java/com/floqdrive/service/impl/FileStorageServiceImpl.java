@@ -1,6 +1,6 @@
 package com.floqdrive.service.impl;
 
-import com.floqdrive.dto.FileIndoDto;
+import com.floqdrive.dto.FileInfoDto;
 import com.floqdrive.dto.FileUploadResponse;
 import com.floqdrive.entity.FileEntity;
 import com.floqdrive.entity.User;
@@ -93,6 +93,10 @@ public class FileStorageServiceImpl implements FileStorageService
         }
 
         Path filePath = root.resolve(userId.toString()).resolve(file.getStoredName());
+        if(!Files.exists(filePath))
+        {
+            throw new NotFoundException("File not found on disk");
+        }
         return new FileSystemResource(filePath);
     }
 
@@ -119,13 +123,13 @@ public class FileStorageServiceImpl implements FileStorageService
     }
 
     @Override
-    public List<FileIndoDto> listFiles(Long userId)
+    public List<FileInfoDto> listFiles(Long userId)
     {
         User user  = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found"));
 
         return fileRepository.findByOwner((user)).stream()
-                .map(f -> new FileIndoDto(f.getId(), f.getOriginalName(), f.getSize(), f.getUploadedAt()
+                .map(f -> new FileInfoDto(f.getId(), f.getOriginalName(), f.getSize(), f.getUploadedAt()
                 )).toList();
     }
 }
