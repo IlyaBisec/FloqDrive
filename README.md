@@ -263,10 +263,54 @@ http://localhost:8080/swagger-ui.html
 
 ## Error Handling
 
-The application uses a **global exception handler**:
-- `404 Not Found` – entity not found or access denied
-- `400 Bad Request` – validation or logical errors
-
+The application uses a centralized global exception handler (`GlobalExceptionHandler`) which provides consistent JSON responses for errors:
+- **400 Bad Request – Validation or Illegal Arguments**
+Triggered when request data fails validation or an illegal argument is provided. Example response for a DTO validation failure:
+```
+{
+  "error": "BAD_REQUEST",
+  "message": "username: must not be blank, password: size must be between 8 and 32"
+}
+```
+- **404 Not Found – Entity Not Found**
+Returned when a requested resource does not exist.
+```
+{
+  "error": "NOT_FOUND",
+  "message": "User with ID 123 not found"
+}
+```
+- **409 Conflict – Illegal State / Business Logic Conflict**
+Returned when a requested operation violates business rules or state constraints.
+```
+{
+  "error": "CONFLICT",
+  "message": "Cannot delete user: active files exist"
+}
+```
+- **500 Internal Server Error – Unexpected Exceptions**
+Catches all unhandled exceptions.
+```
+{
+  "error": "INTERNAL_ERROR",
+  "message": "NullPointerException"
+}
+```
+- **500 Internal Server Error – Database Errors**
+Specific handler for database exceptions.
+```
+{
+  "error": "DATABASE_ERROR",
+  "message": "Database error: could not execute statement"
+}
+```
+- **All responses** follow the same JSON structure:
+```
+{
+  "error": "ERROR_CODE",
+  "message": "Human-readable description"
+}
+```
 ---
 
 ## IlyaBisec
