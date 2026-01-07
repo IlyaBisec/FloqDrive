@@ -1,6 +1,6 @@
 package com.floqdrive.controller;
 
-import com.floqdrive.dto.FileIndoDto;
+import com.floqdrive.dto.FileInfoDto;
 import com.floqdrive.dto.FileUploadResponse;
 import com.floqdrive.entity.User;
 import com.floqdrive.service.FileStorageService;
@@ -57,9 +57,10 @@ public class FileController {
     @GetMapping("/{fileId}")
     public ResponseEntity<Resource> downloadFile(
             @PathVariable Long fileId,
-            @RequestParam Long userId)
+            @AuthenticationPrincipal UserDetailsImpl userDetails)
     {
         // Load file from disk
+        Long userId = userDetails.getUser().getId();
         Resource resource = fileStorageService.loadFile(fileId, userId);
 
         // Send file as attachment
@@ -75,15 +76,17 @@ public class FileController {
     @DeleteMapping("/{fileId}")
     public void deleteFile(
             @PathVariable Long fileId,
-            @RequestParam Long userId)
+            @AuthenticationPrincipal UserDetailsImpl userDetails)
     {
+        Long userId = userDetails.getUser().getId();
         fileStorageService.deleteFile(fileId, userId);
     }
 
     // Get list of user files
     @GetMapping
-    public List<FileIndoDto> listFiles(@RequestParam Long userId)
+    public List<FileInfoDto> listFiles(@AuthenticationPrincipal UserDetailsImpl userDetails)
     {
+        Long userId = userDetails.getUser().getId();
         return fileStorageService.listFiles(userId);
     }
 
