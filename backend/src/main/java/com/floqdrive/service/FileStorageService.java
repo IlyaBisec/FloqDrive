@@ -1,6 +1,6 @@
 package com.floqdrive.service;
 
-import com.floqdrive.dto.FileIndoDto;
+import com.floqdrive.dto.FileInfoDto;
 import com.floqdrive.dto.FileUploadResponse;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,5 +24,5 @@ public interface FileStorageService
     void deleteFile(Long fileId, Long userId);
 
     // Return user file list
-    List<FileIndoDto> listFiles(Long userId);
+    List<FileInfoDto> listFiles(Long userId);
 }
