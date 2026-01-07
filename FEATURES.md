@@ -16,6 +16,7 @@ It is intentionally high-level and shows the **development direction**, not impl
 - Dockerized database
 - Clean layered architecture (Controller / Service / Repository)
 - Docker Compose (backend + database)
+- Global error responses
 
 ---
 
@@ -31,7 +32,6 @@ It is intentionally high-level and shows the **development direction**, not impl
 ## Planned Backend Improvements
 
 - Improved exception handling
-- Global error responses
 - API versioning
 - Pagination & sorting
 - Request validation
