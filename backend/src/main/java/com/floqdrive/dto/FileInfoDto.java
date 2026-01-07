@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class FileIndoDto
+public class FileInfoDto
 {
     // ID file in database
     private Long id;
