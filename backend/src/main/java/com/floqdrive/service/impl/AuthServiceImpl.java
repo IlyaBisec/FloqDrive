@@ -26,7 +26,7 @@ public class AuthServiceImpl implements AuthService
     public void register(RegisterRequest registerRequest)
     {
         // Check username exists
-        if(userRepository.findByUsername(registerRequest.getUsername()).isPresent())
+        if(userRepository.existsByUsername(registerRequest.getUsername()))
         {
             throw new IllegalArgumentException("Username already exists");
         }
