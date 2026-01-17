@@ -1,10 +1,8 @@
 # FloqDrive
 
-FloqDrive is a **RESTful backend application** built with **Spring Boot** that provides:
-- User registration and authentication using **JWT**
-- Secure file upload, download, deletion, and listing
-- File storage on disk with metadata stored in a database
-- Stateless security using **Spring Security**
+FloqDrive is a production-oriented backend application built with Spring Boot.
+The project focuses on clean architecture, stateless security, and containerized deployment,
+and was developed as a preparation project for a backend developer role.
 
 ## Functional (MVP)
 
@@ -314,7 +312,5 @@ Specific handler for database exceptions.
 ---
 
 ## IlyaBisec
-
-The project focuses on clean architecture, stateless security,
-and production-ready containerized deployment, because was developed as a pet project to prepare for a backend position.
+ilya.borisov.bisec@gmail.com
 
